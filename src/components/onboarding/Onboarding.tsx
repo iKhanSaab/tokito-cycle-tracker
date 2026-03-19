@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStore } from '@/store/useStore';
+import tokitoLogo from '@/assets/tokito-logo.png';
 import { Button } from '@/components/ui/button';
 import { OnboardingStep1 } from './OnboardingStep1';
 import { OnboardingStep2 } from './OnboardingStep2';
