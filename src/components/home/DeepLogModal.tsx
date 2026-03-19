@@ -6,7 +6,7 @@ import { toast } from '@/hooks/use-toast';
 export function DeepLogModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const today = new Date().toISOString().split('T')[0];
   const { isPeriodActive, setDeepLog, getDeepLog } = useStore();
-  const existing = getDeepLog(today) || {};
+  const existing = getDeepLog(today);
 
   const [spotting, setSpotting] = useState(existing.spotting ?? false);
   const [cramps, setCramps] = useState(existing.crampsSeverity ?? 0);
