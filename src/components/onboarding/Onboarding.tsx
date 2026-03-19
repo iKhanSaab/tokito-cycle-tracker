@@ -27,6 +27,15 @@ export function Onboarding() {
 
   return (
     <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6">
+      {/* Logo */}
+      <motion.img
+        src={tokitoLogo}
+        alt="Tokito"
+        className="w-16 h-16 mb-4"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+      />
       {/* Progress dots */}
       <div className="flex gap-2 mb-8">
         {[0, 1, 2, 3].map((i) => (
