@@ -8,17 +8,17 @@ export function DeepLogModal({ open, onClose }: { open: boolean; onClose: () => 
   const { isPeriodActive, setDeepLog, getDeepLog } = useStore();
   const existing = getDeepLog(today);
 
-  const [spotting, setSpotting] = useState(existing.spotting ?? false);
-  const [cramps, setCramps] = useState(existing.crampsSeverity ?? 0);
-  const [flow, setFlow] = useState(existing.flowHeaviness ?? null);
-  const [moodDetailed, setMoodDetailed] = useState(existing.moodDetailed ?? 50);
-  const [focus, setFocus] = useState(existing.focusConcentration ?? 50);
-  const [bloating, setBloating] = useState(existing.bloating ?? false);
-  const [headaches, setHeadaches] = useState(existing.headaches ?? false);
-  const [bodyAches, setBodyAches] = useState(existing.bodyAches ?? false);
-  const [sleepQuality, setSleepQuality] = useState(existing.sleepQuality ?? undefined);
-  const [stress, setStress] = useState(existing.stressLevel ?? 5);
-  const [notes, setNotes] = useState(existing.notes ?? '');
+  const [spotting, setSpotting] = useState(existing?.spotting ?? false);
+  const [cramps, setCramps] = useState(existing?.crampsSeverity ?? 0);
+  const [flow, setFlow] = useState(existing?.flowHeaviness ?? null);
+  const [moodDetailed, setMoodDetailed] = useState(existing?.moodDetailed ?? 50);
+  const [focus, setFocus] = useState(existing?.focusConcentration ?? 50);
+  const [bloating, setBloating] = useState(existing?.bloating ?? false);
+  const [headaches, setHeadaches] = useState(existing?.headaches ?? false);
+  const [bodyAches, setBodyAches] = useState(existing?.bodyAches ?? false);
+  const [sleepQuality, setSleepQuality] = useState(existing?.sleepQuality ?? undefined);
+  const [stress, setStress] = useState(existing?.stressLevel ?? 5);
+  const [notes, setNotes] = useState(existing?.notes ?? '');
 
   const save = (data: Record<string, any>) => {
     setDeepLog(today, data);
