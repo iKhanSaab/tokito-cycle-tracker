@@ -158,18 +158,46 @@ export const useStore = create<TokitoState>()(
         get().logs.find((l) => l.date === date),
 
       getPhaseForDate: (dateStr) => {
-        const { profile } = get();
+        const { profile, periodDates } = get();
         const target = new Date(dateStr);
+        const today = new Date();
         
-        // Default to follicular if no period data
-        return 'follicular';
+        // If no period dates logged, default to follicular
+        if (periodDates.length === 0) {
+          return 'follicular';
+        }
+        
+        // Sort period dates
+        const sortedDates = [...periodDates].sort();
+        const firstPeriodDate = sortedDates[0];
+        
+        if (!firstPeriodDate) {
+          return 'follicular';
+        }
+        
+        const firstPeriod = new Date(firstPeriodDate);
+        const cycleLength = profile.cycleLength || 28;
+        
+        // Calculate days since first period started
+        const daysSincePeriod = Math.floor((target.getTime() - firstPeriod.getTime()) / (1000 * 60 * 60 * 24));
+        
+        // If date is before first logged period, default to follicular
+        if (daysSincePeriod < 0) {
+          return 'follicular';
+        }
+        
+        // Calculate position in cycle
+        const dayInCycle = (daysSincePeriod % cycleLength) + 1;
+        
+        // Return phase based on day in cycle
+        if (dayInCycle <= 5) return 'menstrual';
+        if (dayInCycle <= 13) return 'follicular';
+        if (dayInCycle <= 16) return 'ovulation';
+        return 'luteal';
       },
 
       togglePeriodForDate: (date) => {
-        const { periodDates, isPeriodActive, getDeepLog } = get();
-        const today = new Date().toISOString().split('T')[0];
-        
-        if (date !== today) return;
+        const { periodDates, getDeepLog } = get();
 
         if (periodDates.includes(date)) {
           // Remove from period dates

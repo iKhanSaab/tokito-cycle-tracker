@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tokito</string>
+    <string name="title_activity_main">Tokito</string>
+    <string name="package_name">com.tokito.app</string>
+    <string name="custom_url_scheme">com.tokito.app</string>
+</resources>

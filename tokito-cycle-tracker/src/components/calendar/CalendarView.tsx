@@ -151,43 +151,107 @@ export function CalendarView() {
             </DialogDescription>
           </DialogHeader>
 
-          {selectedLog ? (
+          {selectedLog || selectedDeep ? (
             <div className="space-y-4">
+              {/* Main Metrics */}
               <div>
-                <h4 className="text-sm font-semibold text-foreground mb-2">Today's Snapshot</h4>
-                <div className="grid grid-cols-3 gap-3">
+                <h4 className="text-sm font-semibold text-foreground mb-2">Daily Log</h4>
+                <div className="grid grid-cols-3 gap-2">
                   <div className="bg-muted rounded-xl p-3 text-center">
-                    <p className="text-2xl">{MOOD_EMOJIS[Math.round((selectedLog.moodQuick / 100) * 4)]}</p>
+                    <p className="text-2xl">{selectedLog ? MOOD_EMOJIS[Math.round((selectedLog.moodQuick / 100) * 4)] : '➖'}</p>
                     <p className="text-xs text-muted-foreground mt-1">Mood</p>
                   </div>
                   <div className="bg-muted rounded-xl p-3 text-center">
-                    <p className="text-2xl">{ENERGY_EMOJIS[Math.round((selectedLog.energyQuick / 100) * 4)]}</p>
+                    <p className="text-2xl">{selectedLog ? ENERGY_EMOJIS[Math.round((selectedLog.energyQuick / 100) * 4)] : '➖'}</p>
                     <p className="text-xs text-muted-foreground mt-1">Energy</p>
                   </div>
                   <div className="bg-muted rounded-xl p-3 text-center">
-                    <p className="text-xl font-bold text-foreground">{selectedLog.sleepHours}h</p>
+                    <p className="text-xl font-bold text-foreground">{selectedLog ? `${selectedLog.sleepHours}h` : '➖'}</p>
                     <p className="text-xs text-muted-foreground mt-1">Sleep</p>
                   </div>
                 </div>
               </div>
 
+              {/* Deep Log */}
               {selectedDeep && (
                 <div>
-                  <h4 className="text-sm font-semibold text-foreground mb-2">Deep Log</h4>
-                  <div className="space-y-1 text-sm">
-                    {selectedDeep.bloating && <p className="text-muted-foreground">Bloating: Yes</p>}
-                    {selectedDeep.headaches && <p className="text-muted-foreground">Headaches: Yes</p>}
+                  <h4 className="text-sm font-semibold text-foreground mb-2">Deep Log Details</h4>
+                  <div className="bg-muted rounded-xl p-3 space-y-2">
+                    {/* Symptoms */}
+                    {(selectedDeep.bloating || selectedDeep.headaches || selectedDeep.bodyAches) && (
+                      <div className="flex flex-wrap gap-1">
+                        <span className="text-xs text-muted-foreground">Symptoms:</span>
+                        {selectedDeep.bloating && <span className="text-xs bg-primary/20 px-2 py-0.5 rounded-full">Bloating</span>}
+                        {selectedDeep.headaches && <span className="text-xs bg-primary/20 px-2 py-0.5 rounded-full">Headaches</span>}
+                        {selectedDeep.bodyAches && <span className="text-xs bg-primary/20 px-2 py-0.5 rounded-full">Body Aches</span>}
+                      </div>
+                    )}
+                    
+                    {/* Cramps & Flow */}
+                    {(selectedDeep.crampsSeverity !== undefined || selectedDeep.flowHeaviness) && (
+                      <div className="flex gap-3 text-sm">
+                        {selectedDeep.crampsSeverity !== undefined && selectedDeep.crampsSeverity > 0 && (
+                          <p className="text-muted-foreground">Cramps: {selectedDeep.crampsSeverity}/100</p>
+                        )}
+                        {selectedDeep.flowHeaviness && (
+                          <p className="text-muted-foreground capitalize">Flow: {selectedDeep.flowHeaviness}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Focus */}
+                    {selectedDeep.focusConcentration !== undefined && (
+                      <p className="text-muted-foreground">Focus: {selectedDeep.focusConcentration}/100</p>
+                    )}
+
+                    {/* Sleep Quality */}
+                    {selectedDeep.sleepQuality && (
+                      <p className="text-muted-foreground capitalize">Sleep Quality: {selectedDeep.sleepQuality}</p>
+                    )}
+
+                    {/* Stress */}
                     {selectedDeep.stressLevel !== undefined && (
                       <p className="text-muted-foreground">Stress: {selectedDeep.stressLevel}/10</p>
                     )}
-                    {selectedDeep.notes && <p className="text-muted-foreground italic">"{selectedDeep.notes}"</p>}
+
+                    {/* Spotting & Discharge */}
+                    {(selectedDeep.spotting !== undefined || selectedDeep.discharge) && (
+                      <div className="flex gap-3 text-sm">
+                        {selectedDeep.spotting !== undefined && (
+                          <p className="text-muted-foreground">Spotting: {selectedDeep.spotting ? 'Yes' : 'No'}</p>
+                        )}
+                        {selectedDeep.discharge && (
+                          <p className="text-muted-foreground">Discharge: {selectedDeep.discharge}</p>
+                        )}
+                      </div>
+                    )}
+
+                    {/* Libido */}
+                    {selectedDeep.libido !== undefined && (
+                      <p className="text-muted-foreground capitalize">Libido: {['Low', 'Medium', 'High'][selectedDeep.libido - 1] || 'N/A'}</p>
+                    )}
+
+                    {/* Notes */}
+                    {selectedDeep.notes && (
+                      <p className="text-muted-foreground italic border-t border-border pt-2 mt-2">"{selectedDeep.notes}"</p>
+                    )}
+
+                    {/* Empty state */}
+                    {!selectedDeep.bloating && !selectedDeep.headaches && !selectedDeep.bodyAches && 
+                     selectedDeep.crampsSeverity === undefined && !selectedDeep.flowHeaviness &&
+                     selectedDeep.focusConcentration === undefined && !selectedDeep.sleepQuality &&
+                     selectedDeep.stressLevel === undefined && !selectedDeep.notes && (
+                      <p className="text-xs text-muted-foreground italic">No deep log details recorded</p>
+                    )}
                   </div>
                 </div>
               )}
             </div>
           ) : (
-            <div className="text-center py-4">
-              <p className="text-sm text-muted-foreground italic">No log for this day</p>
+            <div className="text-center py-8">
+              <p className="text-lg mb-2">📅</p>
+              <p className="text-sm text-muted-foreground">No data for this day</p>
+              <p className="text-xs text-muted-foreground mt-1">Log your day to see details here</p>
             </div>
           )}
         </DialogContent>
