@@ -145,6 +145,12 @@ export function SettingsPage() {
         <Section title="About">
           <p className="text-sm text-muted-foreground">Tokito v1.0.0</p>
           <p className="text-sm text-muted-foreground">Track your cycle. Understand your body.</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Your data stays on your device. Tokito does not collect or send personal data.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Tokito is not a medical tool. Cycle phases are approximate and should not be used for medical decisions.
+          </p>
         </Section>
       </div>
     </div>
